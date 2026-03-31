@@ -44,7 +44,7 @@ enterprise-url-shortener/
 
 Create a `.env` file in the project root:
 
-```bash
+
 # AWS
 AWS_REGION=ap-south-1
 AWS_ACCESS_KEY_ID=YOUR_REAL_KEY
@@ -83,17 +83,17 @@ ENABLE_ANALYTICS=true
 ## 🔹 Architecture
 
 Frontend (S3/CloudFront)
-│
-▼
+         │
+         ▼
 API Gateway (HTTP API)
-│
-▼
+         │
+         ▼
 Lambda Functions
 ┌───────────────┐ ┌───────────────┐
-│ create_url │ │ redirect_url │
+│ create_url    │ │ redirect_url  │
 └───────────────┘ └───────────────┘
-│ │
-▼ ▼
+         │                │
+         ▼                ▼
 DynamoDB Table (URLs & clicks)
 
 
@@ -112,7 +112,7 @@ DynamoDB Table (URLs & clicks)
 
 - **Endpoint:** `POST /create`  
 - **Request Body:**
-```json
+
 {
   "url": "https://example.com/long-url"
 }
