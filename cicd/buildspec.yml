@@ -1,0 +1,14 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+  build:
+    commands:
+      - cd lambda
+      - zip create_url.zip create_url.py
+      - zip redirect_url.zip redirect_url.py
+      - mv *.zip ../terraform/
+artifacts:
+  files:
+    - '**/*'
