@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>URL Shortener</title></head>
+<body>
+<h2>URL Shortener</h2>
+<input id="urlInput" placeholder="Enter URL"/>
+<button onclick="shorten()">Shorten</button>
+<p id="result"></p>
+
+<script>
+async function shorten() {
+  const url = document.getElementById("urlInput").value;
+  const API_BASE = "{{API_BASE}}"  // Replace at deploy via env
+
+  const res = await fetch(`${API_BASE}/create`, {
+    method: "POST",
+    body: JSON.stringify({ url })
+  });
+  const data = await res.json();
+  document.getElementById("result").innerText = data.short_url;
+}
+</script>
+</body>
+</html>
