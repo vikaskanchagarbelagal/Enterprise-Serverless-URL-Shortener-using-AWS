@@ -27,16 +27,19 @@ A **fully serverless URL shortener** built on AWS, designed for **enterprise-gra
 ---
 
 ## 🔹 Project Structure
+```
+
 enterprise-url-shortener/
 │
-├── deploy.sh <-- auto-package & deploy script
-├── terraform/ <-- Terraform infra (DynamoDB, Lambda, API, S3, CloudFront)
-├── lambda/ <-- Lambda functions + requirements
-├── frontend/ <-- Static website
-├── .env <-- Environment variables
+├── deploy.sh           <-- auto-package & deploy script
+├── terraform/          <-- Terraform infra (DynamoDB, Lambda, API, S3, CloudFront)
+├── lambda/             <-- Lambda functions + requirements
+├── frontend/           <-- Static website
+├── .env                <-- Environment variables
 ├── .gitignore
 └── README.md
 
+````
 
 ---
 
@@ -82,90 +85,97 @@ ENABLE_ANALYTICS=true
 
 ## 🔹 Architecture
 
+```
 Frontend (S3/CloudFront)
-         │
-         ▼
+        │
+        ▼
 API Gateway (HTTP API)
-         │
-         ▼
+        │
+        ▼
 Lambda Functions
-┌───────────────┐ ┌───────────────┐
-│ create_url    │ │ redirect_url  │
-└───────────────┘ └───────────────┘
-         │                │
-         ▼                ▼
-DynamoDB Table (URLs & clicks)
+ ┌───────────────┐  ┌───────────────┐
+ │ create_url    │  │ redirect_url  │
+ └───────────────┘  └───────────────┘
+        │                  │
+        ▼                  ▼
+   DynamoDB Table (URLs & clicks)
+```
 
-
-- **Frontend:** Users enter URLs and receive shortened links  
-- **Create Lambda:** Generates short code and stores it in DynamoDB  
-- **Redirect Lambda:** Redirects users and updates click counts  
-- **DynamoDB:** Stores URL mappings and analytics  
-- **CloudFront:** Serves frontend globally  
-- **Optional Custom Domain:** Can be configured via Terraform  
+* **Frontend:** Users enter URLs and receive shortened links.
+* **Create Lambda:** Generates short code and stores it in DynamoDB.
+* **Redirect Lambda:** Redirects users and updates click counts.
+* **DynamoDB:** Central storage for URLs and analytics.
+* **CloudFront:** Serves frontend globally.
+* **Optional Custom Domain:** Configurable via Terraform variable.
 
 ---
 
 ## 🔹 Quick API Usage
 
-### 1. Create a Short URL
+**1. Create a Short URL**
 
-- **Endpoint:** `POST /create`  
-- **Request Body:**
+* **Endpoint:** `POST /create`
+* **Body:** JSON `{ "url": "https://example.com/long-url" }`
+* **Response:**
 
-{
-  "url": "https://example.com/long-url"
-}
-
-Response:
-
+```json
 {
   "short_url": "https://yourdomain.com/abc123"
 }
+```
 
-### 2. Redirect to Original URL
+**2. Redirect to Original URL**
 
-- **Endpoint:** `GET /{short_code}`
-
-- **Example:**  
-  `GET /abc123` → redirects to `https://example.com/long-url`
-
-- **Behavior:**
-  - Returns HTTP `301 Redirect`
-  - Automatically increments click count in DynamoDB
+* **Endpoint:** `GET /{short_code}`
+* **Example:** `GET /abc123` → redirects to `https://example.com/long-url`
+* **Click Tracking:** DynamoDB updates `clicks` automatically.
 
 ---
 
 ## 🔹 Frontend Usage
 
-1. Open the deployed frontend (via CloudFront URL)  
-2. Enter a long URL in the input field  
-3. Click **Shorten**  
-4. Copy and share the generated short URL  
-5. Visiting the short URL redirects to the original link  
+1. Open `index.html` (served via CloudFront).
+2. Enter the long URL in the input box.
+3. Click **Shorten** → receives the short URL.
+4. Click or share the URL → redirects to original URL.
+
+**Example Screenshot (placeholder):**
+![Frontend Screenshot](https://via.placeholder.com/600x300?text=URL+Shortener+Frontend)
 
 ---
 
 ## 🔹 Example Terraform Outputs
 
-After deployment, Terraform provides:
+After deployment, Terraform will output:
 
+```
 dynamodb_table = enterprise-url-shortener-table
-create_lambda = enterprise-url-shortener-create
+create_lambda  = enterprise-url-shortener-create
 redirect_lambda = enterprise-url-shortener-redirect
 api_url = https://xxxxxx.execute-api.ap-south-1.amazonaws.com
-
 frontend_url = https://xxxxxx.cloudfront.net
-
+```
 
 ---
 
 ## 🔹 Technologies Used
 
-- AWS Lambda (Python 3.9)
-- AWS DynamoDB
-- AWS API Gateway (HTTP API)
-- AWS S3 + CloudFront
-- Terraform (Infrastructure as Code)
-- GitHub Actions / AWS CodeBuild
-- Python `boto3` SDK
+* AWS Lambda (Python 3.9)
+* DynamoDB
+* API Gateway (HTTP API)
+* S3 + CloudFront
+* Terraform
+* GitHub Actions / CodeBuild
+* Python `boto3` SDK
+
+---
+
+## 🔹 Optional Enhancements
+
+* Add **authentication** for enterprise usage.
+* Track **clicks by date / user** in DynamoDB.
+* Add **custom analytics dashboard**.
+* Enable **custom SSL certificates** with Route53 and ACM.
+
+```
+
