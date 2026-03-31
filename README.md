@@ -170,12 +170,3 @@ frontend_url = https://xxxxxx.cloudfront.net
 
 ---
 
-## 🔹 Optional Enhancements
-
-* Add **authentication** for enterprise usage.
-* Track **clicks by date / user** in DynamoDB.
-* Add **custom analytics dashboard**.
-* Enable **custom SSL certificates** with Route53 and ACM.
-
-```
-
